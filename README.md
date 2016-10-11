@@ -1,2 +1,0 @@
-# errors
-Errors in SharePoint
