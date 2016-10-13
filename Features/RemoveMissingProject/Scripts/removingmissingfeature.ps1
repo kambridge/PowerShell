@@ -1,6 +1,4 @@
-<#
-NOTES: Removes feature from all site collections and sites
-#>
+<#    NOTES: Removes feature from all site collections and sites    #>
 
 function Remove-SPFeatureFromContentDB($ContentDb, $FeatureId, [switch]$ReportOnly)
 {
@@ -43,5 +41,5 @@ function Remove-SPFeature($obj, $objName, $featId, [bool]$report)
     }
 }
 
-Remove-SPFeatureFromContentDB -ContentDB "SharePoint_Content_Portal" -FeatureId "8096285f-1463-42c7-82b7-f745e5bacf29" –ReportOnly
+Remove-SPFeatureFromContentDB -ContentDB "SharePoint_Content_Portal" -FeatureId "8096285f-1463-42c7-82b7-f745e5bacf29" -ReportOnly
 #Remove-SPFeatureFromContentDB -ContentDB "SharePoint_Content_Portal" -FeatureId "8096285f-1463-42c7-82b7-f745e5bacf29"
