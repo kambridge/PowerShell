@@ -28,6 +28,6 @@ $db = Get-SPDatabase -Identity "<id>" -ServerInstance "<instance>";
 
 #never hurts
 $db.Repair($false);
-#$db.Repair($false);
+#$db.Repair($true);
 
 $db.Update(); 
