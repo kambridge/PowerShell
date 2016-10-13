@@ -58,6 +58,9 @@
 #Generated from .\RemoveMissingProject\XSD\missingsetupfiles.xsd
 Param([string] $XMLFilePath = ".\RemoveMissingProject\XML\missingsetupfiles.xml"
 
+<# CALL SQL QUERY FUNCTION #>
+. .\RemoveMissingProject\Scripts\runsqlquery.ps1
+
 function Get-MissingSetupFile ($SqlServer, $SqlDatabase, $FilePath) {
   if ((Get-PSSnapin Microsoft.SharePoint.PowerShell -EA SilentlyContinue) -eq $null) {
     Add-PSSnapin Microsoft.SharePoint.PowerShell
