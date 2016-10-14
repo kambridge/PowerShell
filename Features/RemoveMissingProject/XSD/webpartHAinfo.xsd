@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="WebPartTable">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="WebpartRow" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WebpartRow">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="SqlServer" type="xs:string"/>
+        <xs:element name="SqlDatabase" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
