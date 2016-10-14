@@ -3,11 +3,11 @@
   <xs:element name="HAMissingSetupFilesTable">
     <xs:complexType>
       <xs:sequence>
-        <xs:element ref="HAMissingSetupFileRow" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="HAMissingSetupFilesRow" minOccurs="0" maxOccurs="unbounded"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="HAMissingSetupFileRow">
+  <xs:element name="HAMissingSetupFilesRow">
     <xs:complexType>
       <xs:sequence>
         <xs:element name="ContentDatabase" type="xs:string"/>
