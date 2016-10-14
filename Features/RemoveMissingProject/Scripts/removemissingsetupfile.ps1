@@ -53,14 +53,16 @@
 
 <#    PARAMETERS    #>
 
-#Get content from XML Path
-#Data from Get-MissingSetupFile()
-#Generated from .\RemoveMissingProject\XSD\missingsetupfiles.xsd
+<# Get content from XML Path #>
+#Data from SP Health Analyzer Error Message
+#Generated from .\RemoveMissingProject\XSD\HAmissingsetupfiles.xsd
+Param([string] $XMLHAFilePath = ".\RemoveMissingProject\XML\HAmissingsetupfiles.xml"
 Param([string] $XMLFilePath = ".\RemoveMissingProject\XML\missingsetupfiles.xml"
 
 <# CALL SQL QUERY FUNCTION #>
 . .\RemoveMissingProject\Scripts\runsqlquery.ps1
 
+<# Runs on each feature #>
 function Get-MissingSetupFile ($SqlServer, $SqlDatabase, $FilePath) {
   if ((Get-PSSnapin Microsoft.SharePoint.PowerShell -EA SilentlyContinue) -eq $null) {
     Add-PSSnapin Microsoft.SharePoint.PowerShell
@@ -73,42 +75,58 @@ function Get-MissingSetupFile ($SqlServer, $SqlDatabase, $FilePath) {
     | select ID, SiteID, WebID, DirName, LeafName, ListID `
     | Format-Table -Wrap -Autosize `
     | Out-String -Width 4096 `
-    | Out-File -append ".\Output\missingsetupfiles.txt"
+    | Out-File -append ".\RemoveMissingProject\Output\missingsetupfiles.txt"
 
 }
-<#
+
 function Get-MissingSetupFiles () {
-  Write-Host("Getting content from " + $XMLFilePath)
-  [xml] $config = Get-Content $XMLFilePath
+  Write-Host("Getting content from " + $XMLHAFilePath)
+  [xml] $config = Get-Content $XMLHAFilePath
 
   #loop through each missing feature append info to file
-  $config.MissingFilesTable.MissingFilesRow | Foreach-object{
+  $config.HAMissingSetupFilesTable.HAMissingSetupFilesRow | Foreach-object{
 
   #Write-host $_.ContentDatabase $_.Feature
   Get-MissingSetupFile -SqlServer "<sql instance>" -SqlDatabase "$($_.ContentDatabase)" -FilePath "$($_.Feature)"
   }
-#>
 
-<#     Get URL of Offending File    #>
-Write-Host("Getting content from " + $XMLFilePath)
-[xml] $config = Get-Content $XMLFilePath
 
-#Loop through each missing feature and get web url
-$config.FilesTable.FileRow | Foreach-Object{
-  $site = Get-SPSite -Limit all | where {$_.Id -eq "$($_.SiteID)"
-  $web = $site | Get-SPWeb -Limit all | where {$_.Id -eq "$($_.WebID)"
-  $web.url
-  $file = $web.GetFile([Guid]"$($_.ID)")
-  $file.ServerRelativeUrl
-  <# DELETE FILE #>
-  $file.ServerRelativeUrl
-    try{
-      #$file.delete()
-    }catch{
-      write-host -ForegroundColor red "There has been an error trying to remove the file:" $file
+<# Delete File #>
+function Get-DeleteMissingSetupFiles (){
+    Write-Host("Getting content from " + $XMLFilePath)
+    [xml] $config = Get-Content $XMLFilePath
+    #loop through each missing feature append info to file
+    $filepath = ".\RemoveMissingProject\Output\deleletefiles_" + $date + ".txt"
+    $config.FilesTable.FileRow | Foreach-object{
+        $siteid = $_.SiteID
+        $site = Get-SPSite -Limit all | where { $_.Id -eq "$($siteid)" }
+        $webid = $_.WebID
+        $web = $site | Get-SPWeb -Limit all | where { $_.Id -eq "$($webid)" }
+        #$web.Url
+        $guidid = $_.ID
+        $listid = $_.ListID
+        $listurl = $web.Lists | where { $_.Id -eq "$($listid)" }
+        #Write-Host $listurl.DefaultDisplayFormUrl 
+        $file = $web.GetFile([Guid]"$($guidid)")
+        #$file.ServerRelativeUrl `s
+        $fileurl = "$($web.url + "/" + $file.Url)|$($_.ID)|$($_.SiteID)|$($_.WebID)|$($_.DirName)|$($_.LeafName )|$($_.ListID)|$listurl.DefaultDisplayFormUrl" 
+        #$fileurl = " $($web.url + "/" + $file.Url) | $listurl.DefaultDisplayFormUrl" 
+        #$fileurl = "$($web.url + "/" + $file.Url) | $($_.LeafName) | $($_.DirName) | $listurl.DefaultDisplayFormUrl" 
+        
+        #Write-Host $fileurl
+        $fileurl `
+        | Format-Table `
+        | Out-String -Width 4096 `
+        | Out-File -append $filepath
+               
+        try{
+           Write-Host $file
+           #$file.delete()           
+        }catch{
+            write-host -ForegroundColor red "There has been an error trying to remove the file:" $file
+        }
     }
 }
-
 
   
   
