@@ -1,6 +1,6 @@
 #SET USER PERMISSIONS
 #DESCRIPTION: PowerShell Script to add user permissions to site and lists/libraries
-#NOTES:
+#NOTES: 
 
 #Get Content from XML file
 Param([string] $filepath = ".\setpermschema.xml")
