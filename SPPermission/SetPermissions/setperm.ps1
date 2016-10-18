@@ -3,7 +3,7 @@
 #NOTES:
 
 #Get Content from XML file
-Param([string] $filepath = ".\userpermissions.xml")
+Param([string] $filepath = ".\setpermschema.xml")
 
 #Start Function 
 function Start-SetPermissions(){
