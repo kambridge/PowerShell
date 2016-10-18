@@ -15,7 +15,7 @@ function Start-SPSiteHierarchy(){
     $logs = $getwebapp | Get-SPSite -Limit All | Get-SPWeb -Limit All | Select Title, URL, ID, ParentWebID, Created | Export-CSV $filepath
     
     foreach ($log in $logs){
-      Write-Progress -Activity "Starting inventory of $($webapp)" -PercentComplete (100) -Status "In Progress...";
+      Write-Progress -Activity "Starting inventory of $($webapp)" -PercentComplete (100) -Status "In Progress..."; Start-Sleep 3;
     }
   }
 }
