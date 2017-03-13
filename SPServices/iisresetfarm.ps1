@@ -1,4 +1,4 @@
-#IIS RESET FOR ALL SP FARM SERVERS
+w#IIS RESET FOR ALL SP FARM SERVERS
 #DESCRIPTION:
 #NOTE:
 
@@ -13,7 +13,7 @@ Write-Host
 $farm = Get-SPFarm
 
 foreach ($server in $servers){
-  Write-Host -ForegroundColor yello "Attempting to reset IIS for $server"
+  Write-Host -ForegroundColor yellow "Attempting to reset IIS for $server"
   iisreset $server /noforce "\\"$_.Address
   iisreset $server /Status "\\"$_.Address
   Write-Host
